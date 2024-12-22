@@ -1,0 +1,15 @@
+.clj-kondo
+.shadow-cljs
+node_modules
+
+build/
+node_modules/
+.shadow-cljs/
+.nrepl-port
+*.tgz
+dist/
+.lsp/
+.calva/
+
+/public/js
+# !/public/index.html
