@@ -31,7 +31,6 @@
   (.setOffset sprite x y))
 
 (defn gen-sprite [scene & {:keys [key x y]}]
-  (prn :hoge)
   (let [sprite (.sprite (-> scene .-physics .-add) x y key)]
     (.setCollideWorldBounds sprite true)
     {:sprite sprite
