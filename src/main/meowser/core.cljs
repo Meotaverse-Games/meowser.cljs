@@ -1,4 +1,4 @@
-(ns frameworks.phaser.core
+(ns meowser.core
   (:require [integrant.core :as ig]
             ["phaser" :as phaser]))
 

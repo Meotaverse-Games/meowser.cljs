@@ -1,4 +1,4 @@
-(ns frameworks.phaser.scene
+(ns meowser.scene
   (:require [shadow.cljs.modern :refer [defclass]]
             ["phaser" :as phaser]))
 

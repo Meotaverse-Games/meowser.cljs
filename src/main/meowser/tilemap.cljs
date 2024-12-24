@@ -1,4 +1,4 @@
-(ns frameworks.phaser.tilemap)
+(ns meowser.tilemap)
 
 (defn add-tileset-image! [{:keys [map]} tileset-name key]
   (.addTilesetImage map (name tileset-name) key))

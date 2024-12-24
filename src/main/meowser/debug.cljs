@@ -1,4 +1,4 @@
-(ns frameworks.phaser.debug)
+(ns meowser.debug)
 
 (def main-scene (atom nil))
 

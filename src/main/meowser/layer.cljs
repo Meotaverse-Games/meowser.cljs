@@ -1,4 +1,4 @@
-(ns frameworks.phaser.layer)
+(ns meowser.layer)
 
 (defn set-collision-from-collision-group! [{:keys [layer]}]
   (.setCollisionFromCollisionGroup layer))

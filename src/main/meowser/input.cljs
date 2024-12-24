@@ -1,6 +1,6 @@
-(ns frameworks.phaser.input
+(ns meowser.input
   (:require ["phaser" :as phaser]
-            [frameworks.phaser.debug :as pd]))
+            [meowser.debug :as pd]))
 
 (def key-codes (-> phaser .-Input .-Keyboard .-KeyCodes))
 
@@ -11,7 +11,7 @@
                                   "arrowleft" :left
                                   "arrowup" :up})
 
-(require '[frameworks.phaser.debug :as pd])
+(require '[meowser.debug :as pd])
 
 (.on (-> @pd/main-scene .-input .-keyboard)
      "keydown"
