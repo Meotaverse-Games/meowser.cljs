@@ -50,6 +50,9 @@
 (defn key-up? [cursor-keys key]
   (.-isUp (get (js->clj cursor-keys) (name key))))
 
+(defn key-just-down? [cursor-keys key]
+  (.JustDown (-> phaser/Input .-Keyboard) (get (js->clj cursor-keys) (name key))))
+
 (defclass BaseScene
   (extends phaser/Scene)
   (field callbacks)
