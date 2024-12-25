@@ -76,7 +76,6 @@
             (created this)))
 
   (update [this]
-          (prn :update!! cursor-keys)
           (when-let [update (:update callbacks)]
             (update this cursor-keys))))
 

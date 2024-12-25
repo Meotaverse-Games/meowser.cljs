@@ -1,7 +1,7 @@
 (ns meowser.layer)
 
 (defn set-collision-from-collision-group! [{:keys [layer]}]
-  (.setCollisionFromCollisionGroup layer))
+  (.setCollisionFromCollisionGroup layer true true))
 
 (defn set-scale! [{:keys [layer]} scale]
   (.setScale layer scale))
@@ -18,8 +18,8 @@
          (when (and collision-group (> (count (.-objects collision-group)) 0))
            (if (and (.-properties collision-group)
                     (-> collision-group .-properties .-isInteractive))
-             (.lineStyle graphics 5, 0x00ff00, 1)
-             (.lineStyle graphics 5, 0x00ffff, 1))
+             (.lineStyle graphics 1, 0x00ff00)
+             (.lineStyle graphics 1, 0x00ffff))
            (doseq [object (.-objects collision-group)]
              (let [x (+ (.-x tile-world-pos) (* (.-x object) scale))
                    y (+ (.-y tile-world-pos) (* (.-y object) scale))]
@@ -27,5 +27,4 @@
                  (.-rectangle object) (.strokeRect graphics x, y, (* (.-width object) scale) (* (.-height object) scale)))))))))))
 
 (defn collider-with-sprite [{:keys [layer]} {:keys [sprite]}]
-  (prn :c layer sprite)
-  (.collider (-> layer .-scene .-physics .-add) layer sprite))
+  (.collider (-> layer .-scene .-physics .-add) sprite layer))
