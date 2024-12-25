@@ -4,6 +4,11 @@
 (defn flip-x! [{:keys [sprite]} flip-x?]
   (set! (.-flipX sprite) flip-x?))
 
+(defn velocity [{:keys [sprite]}]
+  (let [velocity (-> sprite .-body .-velocity)]
+    {:x (.-x velocity)
+     :y (.-y velocity)}))
+
 (defn set-velocity! [{:keys [sprite]} {:keys [x y]}]
   (when x
     (.setVelocityX sprite x))
