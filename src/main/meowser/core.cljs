@@ -19,5 +19,5 @@
                   :scene (clj->js scenes)})]
     (phaser/Game. config)))
 
-(defmethod ig/init-key :frameworks/phaser [_ opts]
+(defmethod ig/init-key :meowser/game [_ opts]
   (gen-game opts))
