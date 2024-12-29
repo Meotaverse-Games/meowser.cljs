@@ -21,5 +21,3 @@
 
 (defmethod ig/init-key :meowser/game [_ opts]
   (gen-game opts))
-
-
