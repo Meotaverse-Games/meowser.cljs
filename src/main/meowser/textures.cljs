@@ -7,27 +7,16 @@
       (.fillStyle color))
     (doseq [y (range (- radius) (inc radius))]
       (doseq [x (range (- radius) (inc radius))]
-        (when (<= (+ (* x x) (* y y)) (* radius radius))
+        (when (< (+ (* x x) (* y y)) (* radius radius))
           (.fillRect graphics
-                     (+ (/ radius 2) (* x 1))
-                     (+ (/ radius 2) (* y 1))
+                     (int (* dot-size (+ radius x)))
+                     (int  (* dot-size (+ radius y)))
                      dot-size dot-size))))
     (doto graphics
-      (.generateTexture key (* radius 4) (* radius 4))
+      (.generateTexture key (* radius 2 dot-size) (* radius 2 dot-size))
       (.destroy))))
 
-(dot-circle @d/main-scene "hoge" 0xffffff 30 5)
 
-(.image (.-add @d/main-scene) 300, 300, "hoge")
+;; (dot-circle @d/main-scene "hoge" 0xffffff 10 2)
 
-
-;; var CreateTexture0 = function (scene, key) {
-;;     // width: 20-0-20
-;;     // height: 100-0-100
-;;     var width = 40, height = 200;
-;;     scene.add.graphics()
-;;         .fillStyle(COLOR_PRIMARY)
-;;         .fillEllipse(width / 2, height / 2, width, height)
-;;         .generateTexture(key, width, height)
-;;         .destroy();
-;; }
+;; (.image (.-add @d/main-scene) 300, 300, "hoge")
