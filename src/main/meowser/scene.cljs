@@ -65,8 +65,6 @@
                            (map (fn [[key-name key]] [(name key-name) (key->code key)])
                                 keys-mapping)))))
 
-;; (.-isDown (get (js->clj (.-asdf-keys @m.debug/main-scene)) "up"))
-
 (defclass BaseScene
   (extends phaser/Scene)
   (field callbacks)
