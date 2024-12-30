@@ -23,6 +23,10 @@
   (let [velocity (-> sprite .-body .-velocity)]
     (set! (.-y velocity) (+ (.-y velocity) speed))))
 
+(defn position [{:keys [sprite]}]
+  {:x (.-x sprite)
+   :y (.-y sprite)})
+
 (defn play-anim [{:keys [sprite]} name]
   (.play sprite (clj->js {:key name}) true))
 
