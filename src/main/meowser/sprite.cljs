@@ -45,5 +45,10 @@
     {:sprite sprite
      :scene scene}))
 
-
-
+(defn gen-no-display-sprite [scene & {:keys [x y width height]}]
+  (let [no-display-sprite (.zone (-> scene .-add) x, y, width, height)]
+    (.existing (-> scene .-physics .-add)
+               no-display-sprite
+               false)
+    {:sprite no-display-sprite
+     :scene scene}))
