@@ -39,6 +39,9 @@
 (defn set-offset! [{:keys [sprite]} x y]
   (.setOffset sprite x y))
 
+(defn set-allow-gravity! [{:keys [sprite]} flag]
+  (.setAllowGravity (.-body sprite) flag))
+
 (defn gen-sprite [scene & {:keys [key x y]}]
   (let [sprite (.sprite (-> scene .-physics .-add) x y key)]
     (.setCollideWorldBounds sprite true)

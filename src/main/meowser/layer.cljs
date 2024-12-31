@@ -26,5 +26,5 @@
                (cond
                  (.-rectangle object) (.strokeRect graphics x, y, (* (.-width object) scale) (* (.-height object) scale)))))))))))
 
-(defn collider-with-sprite [{:keys [layer]} {:keys [sprite]}]
-  (.collider (-> layer .-scene .-physics .-add) sprite layer))
+(defn collider-with-sprite [{:keys [layer]} {:keys [sprite]} & [collide-fn]]
+  (.collider (-> layer .-scene .-physics .-add) sprite layer collide-fn))
