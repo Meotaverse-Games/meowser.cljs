@@ -23,6 +23,10 @@
   (let [velocity (-> sprite .-body .-velocity)]
     (set! (.-y velocity) (+ (.-y velocity) speed))))
 
+(defn position [{:keys [sprite]}]
+  {:x (.-x sprite)
+   :y (.-y sprite)})
+
 (defn play-anim [{:keys [sprite]} name]
   (.play sprite (clj->js {:key name}) true))
 
@@ -35,11 +39,19 @@
 (defn set-offset! [{:keys [sprite]} x y]
   (.setOffset sprite x y))
 
+(defn set-allow-gravity! [{:keys [sprite]} flag]
+  (.setAllowGravity (.-body sprite) flag))
+
 (defn gen-sprite [scene & {:keys [key x y]}]
   (let [sprite (.sprite (-> scene .-physics .-add) x y key)]
     (.setCollideWorldBounds sprite true)
     {:sprite sprite
      :scene scene}))
 
-
-
+(defn gen-no-display-sprite [scene & {:keys [x y width height]}]
+  (let [no-display-sprite (.zone (-> scene .-add) x, y, width, height)]
+    (.existing (-> scene .-physics .-add)
+               no-display-sprite
+               false)
+    {:sprite no-display-sprite
+     :scene scene}))
