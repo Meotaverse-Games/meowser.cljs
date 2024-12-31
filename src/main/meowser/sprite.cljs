@@ -33,6 +33,9 @@
 (defn follow-camera [{:keys [scene sprite]}]
   (.startFollow (-> scene .-cameras .-main) sprite true))
 
+(defn set-size! [{:keys [sprite]} width height]
+  (.setSize sprite width height))
+
 (defn set-body-size! [{:keys [sprite]} width height]
   (.setBodySize sprite width height))
 
@@ -41,6 +44,17 @@
 
 (defn set-allow-gravity! [{:keys [sprite]} flag]
   (.setAllowGravity (.-body sprite) flag))
+
+(defn add! [{:keys [sprite]} target]
+  (.add sprite target))
+
+(defn set-pointer-events! [{:keys [sprite]} events]
+  (.setInteractive sprite)
+  (doseq [[event handler] events]
+    (.on sprite (event {:down "pointerdown"
+                        :over "pointerover"
+                        :out "pointerout"})
+         handler)))
 
 (defn gen-sprite [scene & {:keys [key x y]}]
   (let [sprite (.sprite (-> scene .-physics .-add) x y key)]
@@ -55,3 +69,7 @@
                false)
     {:sprite no-display-sprite
      :scene scene}))
+
+(defn gen-container [scene & {:keys [x y]}]
+  {:sprite (.container (.-add scene) x, y)
+   :scene scene})
