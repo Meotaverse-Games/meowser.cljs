@@ -12,13 +12,15 @@
   (.setFilter (.get (.-textures scene) image-name)
               (-> phaser .-Textures .-FilterMode .-NEAREST)))
 
-(defn load-spritesheet [scene name path size]
+
+
+(defn load-spritesheet [^js/Phaser.Scene scene name path size]
   (let [[width height] size]
     (.spritesheet (.-load scene)
                   name path
                   (js-obj "frameWidth" width "frameHeight" height))))
 
-(defn load-atlas [scene id png-path anims-json sprite-json]
+(defn load-atlas [^js/Phaser.Scene scene id png-path anims-json sprite-json]
   (let [loader (.-load scene)]
     (.animation loader (str id "Data") anims-json)
     (.atlas loader id png-path sprite-json)))

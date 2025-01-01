@@ -1,5 +1,6 @@
 (ns meowser.sprite
-  (:require ["phaser" :as phaser]))
+  (:require ["phaser" :as phaser])
+  (:require-macros [meowser.utils]))
 
 (defn flip-x! [{:keys [sprite]} flip-x?]
   (set! (.-flipX sprite) flip-x?))
@@ -62,7 +63,7 @@
     {:sprite sprite
      :scene scene}))
 
-(defn gen-no-display-sprite [scene & {:keys [x y width height]}]
+(defn gen-no-display-sprite [^js/Phaser.Scene scene & {:keys [x y width height]}]
   (let [no-display-sprite (.zone (-> scene .-add) x, y, width, height)]
     (.existing (-> scene .-physics .-add)
                no-display-sprite
@@ -70,6 +71,6 @@
     {:sprite no-display-sprite
      :scene scene}))
 
-(defn gen-container [scene & {:keys [x y]}]
+(defn gen-container [^js/Phaser.Tilemaps.Tileset scene & {:keys [x y]}]
   {:sprite (.container (.-add scene) x, y)
    :scene scene})

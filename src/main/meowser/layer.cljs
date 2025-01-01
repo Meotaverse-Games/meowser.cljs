@@ -6,14 +6,13 @@
 (defn set-scale! [{:keys [layer]} scale]
   (.setScale layer scale))
 
-(defn draw-collision-groups [{:keys [layer scale]}]
-  (prn [layer scale])
+(defn draw-collision-groups [{:keys [^js/Phaser.GameObjects.Layer layer scale]}]
   (let [graphics (.graphics (.-add (.-scene layer)))]
     (.forEachTile
      layer
-     (fn [tile]
+     (fn [^js/Phaser.Tilemaps.Tile tile]
        (let [tile-world-pos (.tileToWorldXY layer (.-x tile) (.-y tile))
-             [tileset] (-> tile .-tilemapLayer .-tileset)
+             [^js/Phaser.Tilemaps.Tileset tileset] (-> tile .-tilemapLayer .-tileset)
              collision-group (.getTileCollisionGroup tileset (.-index tile))]
          (when (and collision-group (> (count (.-objects collision-group)) 0))
            (if (and (.-properties collision-group)

@@ -1,6 +1,6 @@
 (ns meowser.texture)
 
-(defn dot-circle [scene key color radius dot-size]
+(defn dot-circle [^js/Phaser.Scene scene key color radius dot-size]
   (let [graphics (-> scene .-add (.graphics))]
     (doto graphics
       (.fillStyle color))
