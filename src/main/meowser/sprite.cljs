@@ -27,6 +27,9 @@
   {:x (.-x sprite)
    :y (.-y sprite)})
 
+(defn set-position! [{:keys [sprite]} {:keys [x, y]}]
+  (.setPosition sprite x, y))
+
 (defn play-anim [{:keys [sprite]} name]
   (.play sprite (clj->js {:key name}) true))
 

@@ -33,6 +33,9 @@
 (defn delayed-callback [scene delay callback]
   (.delayedCall (.-time scene) delay callback))
 
+(defn repeat-callback [scene delay callback]
+  (.addEvent (.-time scene) (clj->js {:delay delay :callback callback :loop true})))
+
 (defn start-scene! [scene next]
   (.start (.-scene scene) (name next)))
 
