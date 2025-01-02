@@ -12,8 +12,6 @@
   (.setFilter (.get (.-textures scene) image-name)
               (-> phaser .-Textures .-FilterMode .-NEAREST)))
 
-
-
 (defn load-spritesheet [^js/Phaser.Scene scene name path size]
   (let [[width height] size]
     (.spritesheet (.-load scene)
@@ -46,31 +44,10 @@
     (when size
       (.setDisplaySize image (first size) (second size)))))
 
-(defn key-down? [cursor-keys key]
-  (.-isDown (get (js->clj cursor-keys) (name key))))
-
-(defn key-up? [cursor-keys key]
-  (.-isUp (get (js->clj cursor-keys) (name key))))
-
-(def key-codes (-> phaser .-Input .-Keyboard .-KeyCodes js->clj))
-
-(defn key->code [key]
-  (get key-codes (-> key name (.toUpperCase))))
-
-
-(defn key-just-down? [cursor-keys key]
-  (.JustDown (-> phaser/Input .-Keyboard) (get (js->clj cursor-keys) (name key))))
-
-(defn add-keys [scene keys-mapping]
-  (.addKeys (-> scene .-input .-keyboard)
-            (clj->js (into {}
-                           (map (fn [[key-name key]] [(name key-name) (key->code key)])
-                                keys-mapping)))))
 
 (defclass BaseScene
   (extends phaser/Scene)
   (field callbacks)
-  (field cursor-keys)
 
   (constructor
    [this scene-name callbacks]
@@ -85,13 +62,12 @@
              (preload this)))
 
   (create [this]
-          (set! (.-cursor-keys this) (.createCursorKeys (-> this .-input .-keyboard)))
-          (when-let [created (:created callbacks)]
-            (created this)))
+          (when-let [create (:create callbacks)]
+            (create this)))
 
   (update [this]
           (when-let [update (:update callbacks)]
-            (update this cursor-keys))))
+            (update this))))
 
 
 (defn gen-scene [scene-name callbacks]
