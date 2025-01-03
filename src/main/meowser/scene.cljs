@@ -33,8 +33,12 @@
 (defn delayed-callback [scene delay callback]
   (.delayedCall (.-time scene) delay callback))
 
-(defn repeat-callback [scene delay callback]
-  (.addEvent (.-time scene) (clj->js {:delay delay :callback callback :loop true})))
+(defn repeat-callback
+  ([scene delay callback]
+   (repeat-callback scene delay 0 callback))
+  ([scene delay repeat callback]
+   (.addEvent (.-time scene) (clj->js {:delay delay :loop (= repeat 0) :repeat repeat
+                                       :callback callback}))))
 
 (defn start-scene! [scene next]
   (.start (.-scene scene) (name next)))
@@ -46,7 +50,6 @@
   (let [image (.image (.-add scene) (first position) (second position) name)]
     (when size
       (.setDisplaySize image (first size) (second size)))))
-
 
 (defclass BaseScene
   (extends phaser/Scene)
@@ -63,15 +66,12 @@
   (preload [this]
            (when-let [preload (:preload callbacks)]
              (preload this)))
-
   (create [this]
           (when-let [create (:create callbacks)]
             (create this)))
-
   (update [this]
           (when-let [update (:update callbacks)]
             (update this))))
-
 
 (defn gen-scene [scene-name callbacks]
   (BaseScene. scene-name callbacks))
