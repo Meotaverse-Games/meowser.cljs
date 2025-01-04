@@ -33,8 +33,11 @@
 (defn play-anim [{:keys [sprite]} name]
   (.play sprite (clj->js {:key name}) true))
 
-(defn follow-camera [{:keys [scene sprite]}]
-  (.startFollow (-> scene .-cameras .-main) sprite true))
+(defn follow-camera [{:keys [scene sprite]} & [zoom]]
+  (let [camera (-> scene .-cameras .-main)]
+    (when zoom
+      (.zoomTo camera zoom))
+    (.startFollow camera sprite true)))
 
 (defn set-size! [{:keys [sprite]} width height]
   (.setSize sprite width height))
