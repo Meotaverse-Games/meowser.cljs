@@ -5,11 +5,11 @@
 (defn circle [graphics & {:keys [x y radius]}]
   (.strokeCircle graphics x, y, radius))
 
-(defn line-style [graphics width color alpha]
-  (.lineStyle graphics width, color, alpha))
+(defn line-style [graphics width color & [alpha]]
+  (.lineStyle graphics width, color, (or alpha 0)))
 
-(defn fill-style [graphics color alpha]
-  (.fillStyle graphics color, alpha))
+(defn fill-style [graphics color & [alpha]]
+  (.fillStyle graphics color, (or alpha 1.0)))
 
 (defn rounded-rect [graphics & {:keys [x y width height radius]}]
   (.strokeRoundedRect graphics x, y width, height radius))
@@ -21,20 +21,24 @@
   (.strokeRect graphics x, y width, height))
 
 (defn fill-rect [graphics & {:keys [x y width height]}]
-  (prn [:fill-rect x, y, width, height])
   (.fillRect graphics x, y width, height))
 
 (defn with-graphics
   ([sprite-or-scene body-fn]
-   (with-graphics sprite-or-scene nil body-fn))
-  ([sprite-or-scene texture-opts body-fn]
+   (with-graphics sprite-or-scene {} body-fn))
+  ([sprite-or-scene opts body-fn]
    (let [scene (or (:scene sprite-or-scene) sprite-or-scene)
-         sprite (:sprite sprite-or-scene)
-         graphics (.graphics (.-add scene))]
+         sprite (or (:sprite sprite-or-scene) scene)
+         graphics (.graphics (.-make scene) (clj->js {:add (not (= (:type opts) :mask))}))]
      (body-fn graphics)
-     (if texture-opts
-       (let [{:keys [width height key]} texture-opts]
+     (condp = (:type opts)
+       :texture
+       (let [{:keys [width height key]} opts]
          (doto graphics
            (.generateTexture key width height)
            (.destroy)))
+       :mask
+       (do
+         (prn :mask)
+         (.setMask sprite (.createGeometryMask graphics)))
        (.add sprite graphics)))))
