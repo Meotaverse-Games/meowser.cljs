@@ -79,6 +79,13 @@
     {:sprite no-display-sprite
      :scene scene}))
 
-(defn gen-container [^js/Phaser.Tilemaps.Tileset scene & {:keys [x y]}]
-  {:sprite (.container (.-add scene) x, y)
-   :scene scene})
+(defn gen-container [scene-or-sprite & {:keys [x y]}]
+  (if (:sprite scene-or-sprite)
+    (let [{:keys [scene sprite]} scene-or-sprite
+          container {:sprite (.container (.-add scene) x, y)
+                     :scene scene-or-sprite}]
+      (prn :hoge)
+      (.add sprite (:sprite container))
+      container)
+    {:sprite (.container (.-add scene-or-sprite) x, y)
+     :scene scene-or-sprite}))
