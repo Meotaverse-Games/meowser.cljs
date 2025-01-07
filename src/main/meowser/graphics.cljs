@@ -27,7 +27,7 @@
   ([sprite-or-scene body-fn]
    (with-graphics sprite-or-scene {} body-fn))
   ([sprite-or-scene opts body-fn]
-   (let [scene (or (:scene sprite-or-scene) sprite-or-scene)
+   (let [^js/Phaser.Scene scene (or (:scene sprite-or-scene) sprite-or-scene)
          sprite (or (:sprite sprite-or-scene) scene)
          graphics (.graphics (.-make scene) (clj->js {:add (not (= (:type opts) :mask))}))]
      (body-fn graphics)

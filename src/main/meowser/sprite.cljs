@@ -79,12 +79,11 @@
     {:sprite no-display-sprite
      :scene scene}))
 
-(defn gen-container [scene-or-sprite & {:keys [x y]}]
+(defn gen-container [^js/Phaser.Scene scene-or-sprite & {:keys [x y]}]
   (if (:sprite scene-or-sprite)
-    (let [{:keys [scene sprite]} scene-or-sprite
+    (let [{:keys [^js/Phaser.Scene scene sprite]} scene-or-sprite
           container {:sprite (.container (.-add scene) x, y)
                      :scene scene-or-sprite}]
-      (prn :hoge)
       (.add sprite (:sprite container))
       container)
     {:sprite (.container (.-add scene-or-sprite) x, y)
