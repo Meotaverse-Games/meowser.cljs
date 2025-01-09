@@ -1,6 +1,4 @@
-(ns meowser.graphics
-  (:require
-   [meowser.debug :as m.debug]))
+(ns meowser.graphics)
 
 (defn circle [graphics & {:keys [x y radius]}]
   (.strokeCircle graphics x, y, radius))

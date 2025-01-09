@@ -1,5 +1,4 @@
-(ns meowser.sprite
-  (:require ["phaser" :as phaser]))
+(ns meowser.sprite)
 
 (defn flip-x! [{:keys [sprite]} flip-x?]
   (set! (.-flipX sprite) flip-x?))

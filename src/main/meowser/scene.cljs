@@ -51,6 +51,7 @@
     (when size
       (.setDisplaySize image (first size) (second size)))))
 
+#_{:clj-kondo/ignore [:unresolved-symbol :invalid-arity]}
 (defclass BaseScene
   (extends phaser/Scene)
   (field callbacks)
