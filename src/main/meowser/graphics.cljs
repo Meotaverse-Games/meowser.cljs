@@ -36,7 +36,6 @@
            (.generateTexture key width height)
            (.destroy)))
        :mask
-       (do
-         (prn :mask)
-         (.setMask sprite (.createGeometryMask graphics)))
+       (.setMask sprite (.createGeometryMask graphics))
+
        (.add sprite graphics)))))

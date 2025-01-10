@@ -3,8 +3,7 @@
 
 (def NinePatch (get (js->clj ninepatch) "default"))
 
-(defn gen-nine-patch [{:keys [scene sprite x y width height key base-frame columns rows]}]
+(defn gen-nine-patch [scene sprite & {:keys [x y width height key base-frame columns rows]}]
   {:sprite (doto (NinePatch. scene x y width height key base-frame columns (clj->js rows))
-            ;;  (->> (.existing (.-add scene)))
              (->> (.add sprite)))
    :scene scene})
