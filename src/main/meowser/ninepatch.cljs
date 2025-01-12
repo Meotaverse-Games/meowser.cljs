@@ -3,6 +3,9 @@
 
 (def NinePatch (get (js->clj ninepatch) "default"))
 
+(defn resize [{:keys [^js/Phaser.Scene sprite]} width height]
+  (.resize sprite width height))
+
 (defn gen-nine-patch [scene sprite & {:keys [x y width height key base-frame columns rows]}]
   {:sprite (doto (NinePatch. scene x y width height key base-frame columns (clj->js rows))
              (->> (.add sprite)))
