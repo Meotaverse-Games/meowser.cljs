@@ -64,6 +64,34 @@
                         :out "pointerout"})
          handler)))
 
+(defn set-interactive-events! [{:keys [sprite]} {:keys [hit-area draggable? drop-zone?]} events]
+  (let [opts {:draggable draggable?
+              :dropZone drop-zone?}
+        opts (cond-> opts
+               hit-area (assoc :hitArea (let [{:keys [x, y, width, height]} hit-area]
+                                          (js/Phaser.Geom.Rectangle. x, y, width, height))
+                               :hitAreaCallback js/Phaser.Geom.Rectangle.Contains))]
+    (.setInteractive sprite (clj->js opts)))
+  (doseq [[event handler] events]
+    (.on sprite (event {:drag-start "dragstart"
+                        :drag "drag"
+                        :drag-end "dragend"
+                        :drag-enter "dragenter"
+                        :drag-leave "dragleave"})
+         handler)))
+
+(defn set-drop-zone! [{:keys [sprite]} flag]
+  (set! (.-dropZone (.-input sprite)) flag))
+
+(defn bring-to-top! [{:keys [sprite]} {target-sprite :sprite}]
+  (.bringToTop sprite target-sprite))
+
+(defn set-tint! [{:keys [sprite]} color]
+  (.setTint sprite color))
+
+(defn clear-tint! [{:keys [sprite]}]
+  (.clearTint sprite))
+
 (defn gen-sprite [scene & {:keys [key x y]}]
   (let [sprite (.sprite (-> scene .-physics .-add) x y key)]
     (.setCollideWorldBounds sprite true)
