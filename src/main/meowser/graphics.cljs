@@ -38,4 +38,5 @@
        :mask
        (.setMask sprite (.createGeometryMask graphics))
 
-       (.add sprite graphics)))))
+       (when-let [sprite (:sprite sprite-or-scene)]
+         (.add sprite graphics))))))
