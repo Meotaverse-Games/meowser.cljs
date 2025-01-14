@@ -98,6 +98,11 @@
     {:sprite sprite
      :scene scene}))
 
+(defn gen-frame-index-sprite [scene & {:keys [key frame-index x y]}]
+  (let [sprite (.sprite (.-add scene) x y key frame-index)]
+    {:sprite sprite
+     :scene scene}))
+
 (defn gen-no-display-sprite [^js/Phaser.Scene scene & {:keys [x y width height]}]
   (let [no-display-sprite (.zone (-> scene .-add) x, y, width, height)]
     (.existing (-> scene .-physics .-add)
