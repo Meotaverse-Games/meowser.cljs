@@ -92,14 +92,16 @@
 (defn clear-tint! [{:keys [sprite]}]
   (.clearTint sprite))
 
+(defn collider-with-sprite [{:keys [scene sprite]} {target-sprite :sprite} & [collide-fn]]
+  (.collider (-> scene .-physics .-add) sprite target-sprite collide-fn))
+
 (defn gen-sprite [scene & {:keys [key x y]}]
   (let [sprite (.sprite (-> scene .-physics .-add) x y key)]
-    (.setCollideWorldBounds sprite true)
     {:sprite sprite
      :scene scene}))
 
 (defn gen-frame-index-sprite [scene & {:keys [key frame-index x y]}]
-  (let [sprite (.sprite (.-add scene) x y key frame-index)]
+  (let [sprite (.sprite (-> scene .-physics .-add) x y key frame-index)]
     {:sprite sprite
      :scene scene}))
 
