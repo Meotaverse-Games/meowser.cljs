@@ -53,6 +53,9 @@
 (defn set-allow-gravity! [{:keys [sprite]} flag]
   (.setAllowGravity (.-body sprite) flag))
 
+(defn set-immovable! [{:keys [sprite]} flag]
+  (.setImmovable sprite flag))
+
 (defn add! [{:keys [sprite]} target]
   (.add sprite target))
 
