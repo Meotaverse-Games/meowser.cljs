@@ -45,7 +45,7 @@
   (.setBodySize sprite width height))
 
 (defn set-scale! [{:keys [sprite]} x & [y]]
-  (.setScale sprite x, (if (nil? y) js/undefined y)))
+  (.setScale sprite x, (or y x)))
 
 (defn set-offset! [{:keys [sprite]} x y]
   (.setOffset sprite x y))
