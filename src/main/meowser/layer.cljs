@@ -3,8 +3,11 @@
 (defn set-collision-from-collision-group! [{:keys [layer]}]
   (.setCollisionFromCollisionGroup layer true true))
 
-(defn set-scale! [{:keys [layer]} scale]
-  (.setScale layer scale))
+(defn set-scale! [{:keys [layer]} x, y]
+  (.setScale layer x (or y x)))
+
+(defn set-position! [{:keys [layer]} {:keys [x, y]}]
+  (.setPosition layer x, y))
 
 (defn draw-collision-groups [{:keys [^js/Phaser.GameObjects.Layer layer scale]}]
   (let [graphics (.graphics (.-add (.-scene layer)))]
