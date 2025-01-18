@@ -7,5 +7,6 @@
   (let [[offset-x offset-y] offset]
     {:layer (.createLayer map (name layer-name)
                           (clj->js tilesets)
-                          offset-x offset-y 0)
+                          offset-x offset-y)
+     :offset [offset-x, offset-y]
      :scale scale}))
