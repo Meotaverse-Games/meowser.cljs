@@ -3,7 +3,7 @@
 (defn set-collision-from-collision-group! [{:keys [layer]}]
   (.setCollisionFromCollisionGroup layer true true))
 
-(defn set-scale! [{:keys [layer]} x, y]
+(defn set-scale! [{:keys [layer]} x, & [y]]
   (.setScale layer x (or y x)))
 
 (defn set-position! [{:keys [layer]} {:keys [x, y]}]
