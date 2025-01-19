@@ -101,10 +101,17 @@
 (defn collider-with-sprite [{:keys [scene sprite]} {target-sprite :sprite} & [collide-fn]]
   (.collider (-> scene .-physics .-add) sprite target-sprite collide-fn))
 
-(defn gen-sprite [scene & {:keys [key x y]}]
-  (let [sprite (.sprite (-> scene .-physics .-add) x y key)]
-    {:sprite sprite
-     :scene scene}))
+(defn- gen-sprite-for-scene-or-sprite [{:keys [scene sprite] :as scene-or-sprite} f]
+  (let [scene (or scene scene-or-sprite)
+        new-sprite (f scene)]
+    (when sprite
+      (.add sprite new-sprite))
+    {:sprite new-sprite :scene scene}))
+
+(defn gen-sprite [scene-or-sprite & {:keys [key x y]}]
+  (gen-sprite-for-scene-or-sprite
+   scene-or-sprite
+   #(.sprite (-> % .-physics .-add) x y key)))
 
 (defn gen-frame-index-sprite [scene & {:keys [key frame-index x y]}]
   (let [sprite (.sprite (-> scene .-physics .-add) x y key frame-index)]
@@ -119,12 +126,7 @@
     {:sprite no-display-sprite
      :scene scene}))
 
-(defn gen-container [^js/Phaser.Scene scene-or-sprite & {:keys [x y]}]
-  (if (:sprite scene-or-sprite)
-    (let [{:keys [^js/Phaser.Scene scene sprite]} scene-or-sprite
-          container {:sprite (.container (.-add scene) x, y)
-                     :scene scene}]
-      (.add sprite (:sprite container))
-      container)
-    {:sprite (.container (.-add scene-or-sprite) x, y)
-     :scene scene-or-sprite}))
+(defn gen-container [scene-or-sprite & {:keys [x y]}]
+  (gen-sprite-for-scene-or-sprite
+   scene-or-sprite
+   #(.container (-> % .-add) x y)))
