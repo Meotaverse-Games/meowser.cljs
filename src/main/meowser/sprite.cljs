@@ -50,8 +50,8 @@
 (defn set-offset! [{:keys [sprite]} x y]
   (.setOffset sprite x y))
 
-(defn set-origin! [{:keys [sprite]} x y]
-  (.setOrigin sprite x y))
+(defn set-origin! [{:keys [sprite]} x & [y]]
+  (.setOrigin sprite x (or y x)))
 
 (defn set-allow-gravity! [{:keys [sprite]} flag]
   (.setAllowGravity (.-body sprite) flag))

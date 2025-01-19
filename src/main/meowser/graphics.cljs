@@ -4,7 +4,7 @@
   (.strokeCircle graphics x, y, radius))
 
 (defn line-style [graphics width color & [alpha]]
-  (.lineStyle graphics width, color, (or alpha 0)))
+  (.lineStyle graphics width, color, (or alpha 1)))
 
 (defn fill-style [graphics color & [alpha]]
   (.fillStyle graphics color, (or alpha 1.0)))
