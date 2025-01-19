@@ -129,4 +129,4 @@
 (defn gen-container [scene-or-sprite & {:keys [x y]}]
   (gen-sprite-for-scene-or-sprite
    scene-or-sprite
-   #(.container (-> % .-add) x y)))
+   #(.container (-> ^js/Phaser.Scene % .-add) x y)))
