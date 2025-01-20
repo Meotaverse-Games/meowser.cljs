@@ -113,10 +113,14 @@
    scene-or-sprite
    #(.sprite (-> % .-physics .-add) x y key)))
 
-(defn gen-frame-index-sprite [scene & {:keys [key frame-index x y]}]
-  (let [sprite (.sprite (-> scene .-physics .-add) x y key frame-index)]
-    {:sprite sprite
-     :scene scene}))
+(defn gen-frame-index-sprite [scene-or-sprite & {:keys [key frame-index x y]}]
+  (gen-sprite-for-scene-or-sprite
+   scene-or-sprite
+   #(.sprite (-> % .-physics .-add) x, y key frame-index)))
+
+  ;; (let [sprite (.sprite (-> scene .-physics .-add) x y key frame-index)]
+  ;;   {:sprite sprite
+  ;;    :scene scene}))
 
 (defn gen-no-display-sprite [^js/Phaser.Scene scene & {:keys [x y width height]}]
   (let [no-display-sprite (.zone (-> scene .-add) x, y, width, height)]

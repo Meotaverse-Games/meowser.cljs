@@ -1,13 +1,16 @@
 (ns meowser.graphics)
 
-(defn circle [graphics & {:keys [x y radius]}]
-  (.strokeCircle graphics x, y, radius))
-
 (defn line-style [graphics width color & [alpha]]
   (.lineStyle graphics width, color, (or alpha 1)))
 
 (defn fill-style [graphics color & [alpha]]
   (.fillStyle graphics color, (or alpha 1.0)))
+
+(defn circle [graphics & {:keys [x y radius]}]
+  (.strokeCircle graphics x, y, radius))
+
+(defn fill-circle [graphics & {:keys [x y radius]}]
+  (.fillCircle graphics x, y, radius))
 
 (defn rounded-rect [graphics & {:keys [x y width height radius]}]
   (.strokeRoundedRect graphics x, y width, height radius))
