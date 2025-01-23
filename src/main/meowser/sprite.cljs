@@ -1,4 +1,5 @@
-(ns meowser.sprite)
+(ns meowser.sprite
+  (:require [meowser.core :as m.core]))
 
 (defn flip-x! [{:keys [sprite]} flip-x?]
   (set! (.-flipX sprite) flip-x?))
@@ -60,7 +61,7 @@
   (.setImmovable sprite flag))
 
 (defn add! [{:keys [sprite]} target]
-  (.add sprite target))
+  (.add sprite (m.core/sprite target)))
 
 (defn set-pointer-events! [{:keys [sprite]} events]
   (.setInteractive sprite)

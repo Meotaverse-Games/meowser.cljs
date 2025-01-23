@@ -2,6 +2,10 @@
   (:require [integrant.core :as ig]
             ["phaser" :as phaser]))
 
+(defprotocol MeowserBase
+  (scene [this])
+  (sprite [this]))
+
 (defn gen-game [{:keys [debug? width height scenes boot gravity] :or {debug? false}}]
   (let [sorted-scenes (sort-by #(if (= (-> %1 .-sys .-settings .-key) (name boot)) 0 1) scenes)
         config (clj->js {:type (.-WEBGL phaser)

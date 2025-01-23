@@ -1,6 +1,6 @@
 (ns meowser.debug)
 
-(def state (atom {}))
+(defonce state (atom {}))
 
 (defn set-main-scene! [scene]
   (swap! state assoc :main-scene scene))

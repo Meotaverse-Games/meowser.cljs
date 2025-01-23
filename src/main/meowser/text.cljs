@@ -1,4 +1,17 @@
-(ns meowser.text)
+(ns meowser.text
+  (:require [meowser.core :refer [MeowserBase]]))
+
+(defprotocol MeowserTextProtocol
+  (set-color! [this color]))
+
+(defrecord MeowserText [text]
+  MeowserBase
+  (scene [this] (.-scene this))
+  (sprite [this] text)
+
+  MeowserTextProtocol
+  (set-color! [_this color]
+    (.setColor text color)))
 
 (def default-font (atom nil))
 
@@ -21,4 +34,4 @@
       (.setPadding text (clj->js padding)))
     (when sprite
       (.add sprite text))
-    text))
+    (->MeowserText text)))
