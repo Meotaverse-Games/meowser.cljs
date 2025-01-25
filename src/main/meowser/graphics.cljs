@@ -1,4 +1,5 @@
-(ns meowser.graphics)
+(ns meowser.graphics
+  (:require [meowser.core :as m.core]))
 
 (defn line-style [graphics width color & [alpha]]
   (.lineStyle graphics width, color, (or alpha 1)))
@@ -25,11 +26,11 @@
   (.fillRect graphics x, y width, height))
 
 (defn with-graphics
-  ([sprite-or-scene body-fn]
-   (with-graphics sprite-or-scene {} body-fn))
-  ([sprite-or-scene opts body-fn]
-   (let [^js/Phaser.Scene scene (or (:scene sprite-or-scene) sprite-or-scene)
-         sprite (or (:sprite sprite-or-scene) scene)
+  ([target body-fn]
+   (with-graphics target {} body-fn))
+  ([target opts body-fn]
+   (let [^js/Phaser.Scene scene (m.core/scene target)
+         sprite (m.core/sprite target)
          graphics (.graphics (.-make scene) (clj->js {:add (not (= (:type opts) :mask))}))]
      (body-fn graphics)
      (condp = (:type opts)
@@ -41,5 +42,5 @@
        :mask
        (.setMask sprite (.createGeometryMask graphics))
 
-       (when-let [sprite (:sprite sprite-or-scene)]
+       (when sprite
          (.add sprite graphics))))))

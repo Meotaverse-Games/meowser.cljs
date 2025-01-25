@@ -1,14 +1,15 @@
 (ns meowser.i18n
-  (:require [cljs.reader :as reader]
+  (:require [meowser.core :refer [scene]]
+            [cljs.reader :as reader]
             [clojure.string :as str]))
 
 (def config (atom {}))
 
-(defn load-dictionary [scene lang-opts]
+(defn load-dictionary [target lang-opts]
   (doseq [[lang path] lang-opts]
-    (.text (.-load scene) (name lang) path))
+    (.text (.-load (scene target)) (name lang) path))
   (swap! config assoc
-         :cache-manager (-> scene .-cache .-text)
+         :cache-manager (-> (scene target) .-cache .-text)
          :langs (map first lang-opts)))
 
 (defn setup-dictionary! []
