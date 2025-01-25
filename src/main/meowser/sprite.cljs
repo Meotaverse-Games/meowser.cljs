@@ -130,7 +130,7 @@
 (defn gen-no-display-sprite [target & {:keys [x y width height]}]
   (_gen-sprite
    target
-   #(let [sprite (.zone (-> % .-add) x, y, width, height)]
+   #(let [sprite (.zone (-> ^js/Phaser.Scene % .-add) x, y, width, height)]
       (.existing (-> % .-physics .-add)
                  sprite
                  false))))
