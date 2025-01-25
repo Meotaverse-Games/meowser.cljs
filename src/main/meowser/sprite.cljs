@@ -1,5 +1,13 @@
 (ns meowser.sprite
-  (:require [meowser.core :as m.core]))
+  (:require [meowser.core :refer [MeowserBase scene sprite]]))
+
+(defrecord MeowserSprite [sprite]
+  MeowserBase
+  (scene [_this] (.-scene sprite))
+  (sprite [_this] sprite))
+
+(defn set-visible! [{:keys [sprite]} visible?]
+  (set! (.-visible sprite) visible?))
 
 (defn flip-x! [{:keys [sprite]} flip-x?]
   (set! (.-flipX sprite) flip-x?))
@@ -45,7 +53,7 @@
 (defn set-body-size! [{:keys [sprite]} width height]
   (.setBodySize sprite width height))
 
-(defn set-scale! [{:keys [sprite]} x & [y]]
+(defn set-scale! [{:keys [sprite] :as v} x & [y]]
   (.setScale sprite x, (or y x)))
 
 (defn set-offset! [{:keys [sprite]} x y]
@@ -60,8 +68,8 @@
 (defn set-immovable! [{:keys [sprite]} flag]
   (.setImmovable sprite flag))
 
-(defn add! [{:keys [sprite]} target]
-  (.add sprite (m.core/sprite target)))
+(defn add! [target add-target]
+  (.add (sprite target) (sprite add-target)))
 
 (defn set-pointer-events! [{:keys [sprite]} events]
   (.setInteractive sprite)
@@ -99,39 +107,35 @@
 (defn clear-tint! [{:keys [sprite]}]
   (.clearTint sprite))
 
-(defn collider-with-sprite [{:keys [scene sprite]} {target-sprite :sprite} & [collide-fn]]
-  (.collider (-> scene .-physics .-add) sprite target-sprite collide-fn))
+(defn collider-with-sprite [{:keys [sprite] :as target} {target-sprite :sprite} & [collide-fn]]
+  (.collider (-> (scene target) .-physics .-add) sprite target-sprite collide-fn))
 
-(defn- gen-sprite-for-scene-or-sprite [{:keys [scene sprite] :as scene-or-sprite} f]
-  (let [scene (or scene scene-or-sprite)
+(defn- _gen-sprite [target f]
+  (let [scene (scene target)
         new-sprite (f scene)]
-    (when sprite
+    (when-let [sprite (sprite target)]
       (.add sprite new-sprite))
-    {:sprite new-sprite :scene scene}))
+    (->MeowserSprite new-sprite)))
 
-(defn gen-sprite [scene-or-sprite & {:keys [key x y]}]
-  (gen-sprite-for-scene-or-sprite
-   scene-or-sprite
+(defn gen-sprite [target & {:keys [key x y]}]
+  (_gen-sprite
+   target
    #(.sprite (-> % .-physics .-add) x y key)))
 
-(defn gen-frame-index-sprite [scene-or-sprite & {:keys [key frame-index x y]}]
-  (gen-sprite-for-scene-or-sprite
-   scene-or-sprite
+(defn gen-frame-index-sprite [target & {:keys [key frame-index x y]}]
+  (_gen-sprite
+   target
    #(.sprite (-> % .-physics .-add) x, y key frame-index)))
 
-  ;; (let [sprite (.sprite (-> scene .-physics .-add) x y key frame-index)]
-  ;;   {:sprite sprite
-  ;;    :scene scene}))
+(defn gen-no-display-sprite [target & {:keys [x y width height]}]
+  (_gen-sprite
+   target
+   #(let [sprite (.zone (-> % .-add) x, y, width, height)]
+      (.existing (-> % .-physics .-add)
+                 sprite
+                 false))))
 
-(defn gen-no-display-sprite [^js/Phaser.Scene scene & {:keys [x y width height]}]
-  (let [no-display-sprite (.zone (-> scene .-add) x, y, width, height)]
-    (.existing (-> scene .-physics .-add)
-               no-display-sprite
-               false)
-    {:sprite no-display-sprite
-     :scene scene}))
-
-(defn gen-container [scene-or-sprite & {:keys [x y]}]
-  (gen-sprite-for-scene-or-sprite
-   scene-or-sprite
+(defn gen-container [target & {:keys [x y]}]
+  (_gen-sprite
+   target
    #(.container (-> ^js/Phaser.Scene % .-add) x y)))
