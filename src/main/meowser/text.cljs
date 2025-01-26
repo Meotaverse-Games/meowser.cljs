@@ -1,15 +1,15 @@
 (ns meowser.text
   (:require [meowser.core :refer [MeowserBase scene sprite]]))
 
-(defrecord MeowserText [text]
-  MeowserBase
-  (scene [this] (.-scene this))
-  (sprite [this] text))
-
 (def default-font (atom nil))
 
 (defn set-default-font! [font]
   (reset! default-font font))
+
+(defrecord MeowserText [text]
+  MeowserBase
+  (scene [this] (.-scene this))
+  (sprite [_this] text))
 
 (defn set-color! [{:keys [text]} color]
   (.setColor text color))
