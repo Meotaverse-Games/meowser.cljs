@@ -3,7 +3,7 @@
             [cljs.reader :as reader]
             [clojure.string :as str]))
 
-(def config (atom {}))
+(defonce config (atom {}))
 
 (defn load-dictionary [target lang-opts]
   (doseq [[lang path] lang-opts]
