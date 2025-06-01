@@ -6,6 +6,7 @@
     "shadow-cljs": "2.28.20"
   },
   "dependencies": {
-    "phaser": "^3.90.0"
+    "phaser": "^3.90.0",
+    "phaser3-rex-plugins": "^1.80.12"
   }
 }
