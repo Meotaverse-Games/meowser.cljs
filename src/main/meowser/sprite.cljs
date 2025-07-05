@@ -36,7 +36,26 @@
    :y (.-y sprite)})
 
 (defn set-position! [{:keys [sprite]} {:keys [x, y]}]
-  (.setPosition sprite x, y))
+  (.setPosition sprite x y))
+
+(defn set-rotation! [{:keys [sprite]} rad]
+  (set! (.-rotation sprite) rad))
+
+(defn rotate! [{:keys [sprite]} delta-rad]
+  (set! (.-rotation sprite) (+ (.-rotation sprite) delta-rad)))
+
+(defn rotation [{:keys [sprite]}]
+  (.-rotation sprite))
+
+
+(defn create-anim [target {:keys [key frames frameRate repeat]}]
+(let [scene (scene target)
+      anims (.-anims scene)
+      js-anim (clj->js {:key key
+                        :frames frames
+                        :frameRate frameRate
+                        :repeat repeat})]
+  (.create anims js-anim)))
 
 (defn play-anim [{:keys [sprite]} name]
   (.play sprite (clj->js {:key name}) true))
@@ -121,6 +140,13 @@
   (_gen-sprite
    target
    #(.sprite (-> % .-physics .-add) x y key)))
+
+(defn gen-ui [target & {:keys [key x y]}]
+(_gen-sprite
+ target
+ (fn [scene]
+   (.sprite (.-add scene) x y key))))
+
 
 (defn gen-frame-index-sprite [target & {:keys [key frame-index x y]}]
   (_gen-sprite
