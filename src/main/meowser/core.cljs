@@ -6,7 +6,7 @@
   (scene [this])
   (sprite [this]))
 
-(defn gen-game [{:keys [debug? width height scenes boot gravity] :or {debug? false}}]
+(defn gen-game [{:keys [debug? width height bg scenes boot gravity pixelArt] :or {debug? false pixelArt false}}]
   (let [sorted-scenes
         (sort-by #(if (= (-> %1  scene .-sys .-settings .-key) (name boot)) 0 1) scenes)
 
@@ -15,7 +15,8 @@
                   :parent "root"
                   :width (.-innerWidth js/window)
                   :height (.-innerHeight js/window)
-                  :pixelArt false
+                  :backgroundColor bg
+                  :pixelArt pixelArt
                   :physics {:default "arcade"
                             :arcade {:debug debug?
                                      :gravity {:y gravity}}}
